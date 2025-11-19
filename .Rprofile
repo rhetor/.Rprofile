@@ -1,15 +1,13 @@
-# 在R脚本或控制台中执行
-options(shiny.launch.browser = FALSE)
-
+# 抑制包启动消息
+suppressPackageStartupMessages(require(purrr)) # 函数式编程
+suppressPackageStartupMessages(require(rlang)) # stack
 if (interactive()) {
-    # 包不存在时发出警告，且允许后续代码执行
-    suppressMessages(require(devtools))
-    suppressMessages(require(purrr)) # 函数式编程
-    suppressMessages(require(rlang)) # stack
-}
+    suppressPackageStartupMessages(require(devtools)) # R包构建
+    suppressPackageStartupMessages(require(gert))     # libgit2继承
 
-cat('已加载:', path.expand("~/.Rprofile"), "\n")
-cat('已加载 .Rprofile:', file.path(getwd(), '.Rprofile'), '\n')
+    # 在R脚本或控制台中执行
+    options(shiny.launch.browser = FALSE)
+}
 
 options(
     usethis.description = list(
@@ -38,13 +36,34 @@ where <- function(name, env = caller_env()) {
 }
 
 
-
 # warn on partial matches
 options(
     warnPartialMatchAttr = TRUE,
     warnPartialMatchDollar = TRUE,
     warnPartialMatchArgs = TRUE
 )
+
+# 设置格式化选项
+options(
+    # 缩进宽度（默认为2）
+    formatR.indent = 2,
+
+    # 代码宽度（默认为80）
+    formatR.width = 80,
+
+    # 空格设置
+    formatR.blank = TRUE,
+
+    # 箭头运算符周围加空格
+    formatR.arrow = TRUE,
+
+    # 大括号位置
+    formatR.brace.next.line = FALSE,
+
+    # 注释缩进
+    formatR.comment = TRUE
+)
+
 
 # 本地开发包生成在线文档
 # library(pkgdown)
@@ -92,8 +111,14 @@ default_browser <- function() {
         return(Sys.which("xdg-open") %||% "default")
     }
 }
+
+
 # 设置 options(browser)
 cat('需要手动执行：','options(browser = default_browser())')
+
+
+cat('已加载:', path.expand("~/.Rprofile"), "\n")
+cat('已加载 .Rprofile:', file.path(getwd(), '.Rprofile'), '\n')
 
 # # 1. 加载目标包
 # library(shinymanager)
